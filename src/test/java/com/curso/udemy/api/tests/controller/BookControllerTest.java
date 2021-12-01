@@ -1,5 +1,6 @@
 package com.curso.udemy.api.tests.controller;
 
+import com.curso.udemy.api.controller.BookController;
 import com.curso.udemy.api.domain.dto.BookDTO;
 import com.curso.udemy.api.domain.entity.Book;
 import com.curso.udemy.api.exception.BusinessException;
@@ -34,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
-@WebMvcTest
+@WebMvcTest (controllers = BookController.class)
 @AutoConfigureMockMvc
 public class BookControllerTest {
 
