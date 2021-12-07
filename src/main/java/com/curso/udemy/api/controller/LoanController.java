@@ -8,11 +8,13 @@ import com.curso.udemy.api.domain.entity.Book;
 import com.curso.udemy.api.domain.entity.Loan;
 import com.curso.udemy.api.service.BookService;
 import com.curso.udemy.api.service.LoanService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/loans")
 @RequiredArgsConstructor
+@Slf4j //log do lombok
+@Tag(name = "LOAN API", description = "LOAN API")
 public class LoanController {
 
     private final LoanService loanService;
@@ -33,6 +37,7 @@ public class LoanController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Create a loan", description = "Creates a new book loan.")
     public Long create(@RequestBody LoanDTO loanDTO) {
         Book book = bookService.getBookByIsbn(loanDTO.getIsbn())
                 .orElseThrow( () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Book not found for isbn"));
@@ -50,6 +55,7 @@ public class LoanController {
 
     @PatchMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Return a book by loan", description = "Gets a book by loan id")
     public void returnBook(@PathVariable Long id, @RequestBody ReturnedLoanDTO dto) {
         Loan loan = loanService.getById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -59,6 +65,7 @@ public class LoanController {
     }
 
     @GetMapping
+    @Operation(summary = "Find loans", description = "Finds loans by filters")
     public Page<LoanDTO> find(LoanFilterDTO dto, Pageable pageRequest) {
         Page<Loan> result = loanService.find(dto, pageRequest);
         List<LoanDTO> loans = result

@@ -5,6 +5,7 @@ import com.curso.udemy.api.domain.dto.BookDTO;
 import com.curso.udemy.api.domain.entity.Book;
 import com.curso.udemy.api.exception.BusinessException;
 import com.curso.udemy.api.service.BookService;
+import com.curso.udemy.api.service.LoanService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
@@ -46,6 +47,9 @@ public class BookControllerTest {
 
     @MockBean
     BookService service;
+
+    @MockBean
+    LoanService loanService;
 
     @Test
     @DisplayName("Deve criar um livro com sucesso.")
